@@ -1,0 +1,145 @@
+color_fondo = #444
+azul = #22BCE0
+
+body
+	//background #302B23
+	color color_fondo
+	font-family Arial, Helvetica, sans-serif
+	font-size 16px
+	
+footer
+	background color_fondo
+	color rgba(white,0.5)
+	padding 1em 0
+	text-align center
+	width 100%
+		
+	h3
+		font-size 14px
+		font-weight normal
+		
+		strong
+			display block
+	
+		.design, .electronica
+			display block
+
+			&:before
+			&:after
+				content " - "
+
+header
+	background color_fondo
+	color rgba(white,0.5)
+	padding 0.5em
+	position relative
+	
+	.logo
+		border-right 1px solid white
+		bottom 5px
+		float left
+		position absolute
+		top 5px
+		width 60px
+
+		img
+			width 52px
+			
+	.logoU
+		border-left 1px solid white
+		bottom 5px
+		display inline-block
+		float right
+		position absolute
+		right 5px
+		top 5px
+		width 70px
+
+		img
+			margin-left 10px
+			width 52px
+			
+	.titulo
+		margin 0 80px 0 70px
+
+		.title
+			font-size 18px
+			font-weight normal
+			height 3.5em
+			margin 0
+			text-align center
+			line-height 60px
+
+.sec
+	background white
+	
+	.controles
+		.onOff
+			img
+				width 150px
+				
+	//jquery.tzineClock.css
+	.clock
+		background-color #252525
+		float left
+		height 200px
+		overflow hidden
+		position relative
+		width 200px
+
+		.front.left
+				left 0
+				z-index 10
+		
+		.rotate
+			height 200px
+			left 0
+			position absolute
+			top 0
+			width 200px
+
+		.bg, .front
+			background-color #252525
+			height 200px
+			position absolute
+			top 0
+			width 100px
+		
+		.display
+			color #F5F5F5
+			font-family "Lucida Sans Unicode", "Lucida Grande", sans-serif
+			font-size 60px
+			left 0
+			position absolute
+			text-align center
+			text-shadow 4px 4px 5px #333333
+			top 65px
+			width 200px
+			z-index 20
+			
+		.bg
+			.left
+				left 0
+			.right
+				left 100px	
+	.green
+		.bg
+			.left
+				background url(../imagenes/bg_green.png) no-repeat left top
+			.right
+				background url(../imagenes/bg_green.png) no-repeat right top
+				
+	.rotate
+		.right
+			display none
+			z-index 11
+
+//styles.css
+#fancyClock
+	//border 1px solid #111111
+	height 200px
+	margin 40px auto
+	width 600px
+	
+
+	

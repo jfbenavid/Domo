@@ -1,12 +1,11 @@
 <?php
-	$valEstado=$_POST['est'];
+	$valEstado = $_POST['est'];
 	$numPuerto = $_POST['port'];
 
 	if($valEstado == 1)
 		$valEstado = 1;
 	else
-		$valEstado = "";
+		$valEstado = 2;
 	
     exec("sudo python /var/www/domo/python/luz.py $numPuerto $valEstado");
-    echo "sudo python /var/www/domo/python/luz.py $numPuerto $valEstado";
 ?>

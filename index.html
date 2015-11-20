@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Centro Domotica</title>
+	<link rel="stylesheet" href="css/normalize.css" />
+	<link rel="stylesheet" href="css/domo.css">
+	
+</head>
+<body>
+	<header>
+		<div class="logo">
+			<img src="imagenes/logo.png" alt="Domotica"/>
+		</div>
+		<div class="titulo">
+			<h1 class="title">
+				Central Domotica
+			</h1>
+		</div>
+		<div class="logoU">
+			<img src="imagenes/logoU.png" alt="Universidad">
+		</div>
+	</header>
+	<section class="sec">
+		<article class="selPuerto">
+			<lable for="puertos" class="puerto">Puerto</lable>
+			<select name="puertos" id="puerto">
+				<option value="0">-Seleccione-</option>
+				<option value="5">-puerto 5-</option>
+				<option value="6">-puerto 6-</option>
+				<option value="13">-puerto 13-</option>
+				<option value="17">-puerto 17-</option>
+				<option value="22">-puerto 22-</option>
+				<option value="27">-puerto 27-</option>
+			</select>
+			
+		</article>
+		<article class="controles">
+			<div class="onOff">
+				<figure>
+					<img src="imagenes/botonOn.png" alt="on-off" id="imgOnOff" class="imagen" />
+				</figure>
+			</div>
+			<div class="divDimmer">
+				<input type="range" id="idDimmer" name="dimmer" value="100" min="0" max="100" step="1" />
+			</div>
+			<div class="info">
+				<strong class="estado">Estado:</strong>
+				<span class="port">
+					Puerto 0
+				</span>
+				<span class="infoEstadoDimmer">
+					Dimmer en 100%
+				</span>
+				<span class="infoEstadoOnOff">
+					Energia On
+				</span>
+			</div>
+		</article>
+		
+		<div id="fancyClock"></div>
+	</section>
+
+	<footer>
+		<h3>
+			<strong>
+				Universidad Antonio Nariño
+			</strong>
+			<span class="electronica">
+				Electronica por Leonardo Benavides
+			</span>
+			<span class="design">
+				Pagina web por Fabian Benavides
+			</span>
+		</h3>
+	</footer>
+
+	<!--Carga de jquery y algunos scripts-->
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js" ></script>
+	<script type="text/javascript" src="js/jquery.tzineClock.js" ></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//variables globales
+			estado = 0
+			on = 'imagenes/botonOn.png';
+			off = 'imagenes/botonOff.png';
+			var x = null;
+			CargarDatos();
+			$('#fancyClock').tzineClock();
+			//en click cambie el boton de on a off
+			$('.imagen').click(OnOff);
+			$('#idDimmer').change(EstadoDimmer);
+			$('#puerto').bind('keydown change', MostrarPuerto);
+			$('#puerto').change(CargarDatos);
+
+			function MostrarPuerto(){
+				$('.port').text("Puerto seleccionado: " + $('#puerto').val());
+			}
+			//funcion para cambiar el boton de "on" a "off"
+			function OnOff(){ 
+				//$(this).attr('src',($(this).attr('src') === on)?off:on);
+				x = getPuerto();
+				if(x != null){
+					$('onOff').fadeToggle('explode');
+					$('onOff').css({'display':'block'});
+					$(this).attr('src',function(){
+						if($(this).attr('src') === on){
+							$(this).attr('src', off);
+							estado = 0;
+						}else{
+							$(this).attr('src', on);
+							estado = 1;
+						}
+					});
+
+					$.post('php/procesa_luz.php', {est: estado, port: x}, function(resp){ 
+						//por si se necesita la respuesta
+					});
+				}
+			}
+
+			function IniciarOnOff(){
+				x = getPuerto();
+				var resp;
+				if(x != null){
+					$.post('php/consulta_luz.php',{port: x}, function(resp){
+						this.resp = resp; 
+					});
+				}
+			}
+
+			function getPuerto(){
+				return $('#puerto').val();
+			}
+
+			function EstadoDimmer(){
+				var valEstado = $('#idDimmer').val();
+				var puerto = getPuerto();
+
+				$.post('php/procesa_dimmer.php',{estado: valEstado, puerto: puerto, tipoConsul: 2},function(resp){
+					//cambia el valor del dimmer mostrado en pagina
+						$('.infoEstadoDimmer').text("Dimmer en " + resp + "%");
+						$('#idDimmer').val(resp);
+				});
+			}
+			
+			function CargarDatos(){
+				var valEstado = $('#idDimmer').val();
+				var puerto = getPuerto();
+
+				$.post('php/procesa_dimmer.php',{estado: valEstado, puerto: puerto, tipoConsul: 1},function(resp){
+					//cambia el valor del dimmer mostrado en pagina
+						$('.infoEstadoDimmer').text("Dimmer en " + resp + "%");
+						$('#idDimmer').val(resp);
+				});
+			}
+		});
+	</script>
+
+</body>
+</html>
